@@ -1,0 +1,66 @@
+﻿<Window x:Class="TestPGD.MainWindow" x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestPGD"
+        xmlns:model="clr-namespace:TestPGD.Models"
+        xmlns:oxy="http://oxyplot.org/wpf"        
+        mc:Ignorable="d"
+        Title="Тестовое задание" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" 
+        WindowStyle="SingleBorderWindow" Height="600" Width="700">
+    <Window.DataContext>
+        <model:ObjectInfoMVVM/>
+    </Window.DataContext>
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" Name="GridColumn"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Column="0" Grid.Row="0" Name="dataGrid" AutoGenerateColumns="False" CellEditEnding="DataGrid_CellEditEnding"
+                  GridLinesVisibility="None" AlternatingRowBackground="AliceBlue"
+                  CanUserAddRows="False" CanUserDeleteRows="False"
+                  ItemsSource="{Binding ListObjectInfo, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="      Name      " Binding="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridTextColumn Header="Distance" Binding="{Binding Path=Distance, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:N2}}"/>
+                <DataGridTextColumn Header="Angle" Binding="{Binding Path=Angle, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:N2}}"/>
+                <DataGridTextColumn Header="Width" Binding="{Binding Path=Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:N2}}"/>
+                <DataGridTextColumn Header="Heigth" Binding="{Binding Path=Heigth, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat={}{0:N2}}"/>
+                <DataGridCheckBoxColumn Header="IsDefect" Binding="{Binding Path=IsDefect, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <GridSplitter Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="LightSeaGreen" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <oxy:PlotView Grid.Column="0" Grid.Row="2" Model="{Binding GraphModel}">
+        </oxy:PlotView>
+        <Grid Grid.Column="1" Grid.Row="0" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Button Margin="5" Grid.Row="0" ToolTip="Выбрать файл для экспорта"
+                    Command="{Binding OpenFileToExport}">
+                <StackPanel>
+                    <Image Margin="3" Source="\Images\free-icon-folder_open.png" 
+                           Width="30" Height="30"/>
+                    <TextBlock Margin="5" TextWrapping="Wrap" Text="Загрузить файл ..."/>
+                </StackPanel>
+            </Button>
+            <StackPanel Grid.Row="1" Orientation="Vertical">
+                <TextBlock Margin="2" Text="Информация" HorizontalAlignment="Center"/>
+                <ListBox Margin="5" Name="ListInfo" Width="170" Height="150"
+                     ItemsSource="{Binding ElementName=dataGrid, Path=SelectedItem.InfoList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Grid>
+        <ProgressBar Grid.Column="0" Grid.Row="3" Margin="3" Height="5" 
+                     Minimum="0" Maximum="100"
+                     Value="{Binding ProgressBarValue, UpdateSourceTrigger=PropertyChanged}" 
+                     IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+</Window>
