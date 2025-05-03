@@ -122,7 +122,7 @@ namespace TestPGD.Models
             };
 
             GraphModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = 0F, Maximum = 21F });    //X
-            GraphModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 13 });        //Y
+            GraphModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = 0, Maximum = 13F });       //Y
         }
 
         private void ObjectInfo_PropertyChanged(object? sender, PropertyChangedEventArgs e) => DrawGraph();
@@ -141,17 +141,17 @@ namespace TestPGD.Models
                 var progress = new Progress<int>(value => UpdateProgressBarValue(value));
                 if (Path.GetExtension(FileName).Equals(".xls", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    ListObjectInfo = new ObservableCollection<ObjectInfo>(await WorkWithExcel.ExportFromXLSFile(FileName, progress));
+                    ListObjectInfo = [.. await WorkWithExcel.ExportFromXLSFile(FileName, progress)];
                 }
                 else if (Path.GetExtension(FileName).Equals(".xlsx", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    ListObjectInfo = new ObservableCollection<ObjectInfo>(await WorkWithExcel.ExportFromXLSXFile(FileName, progress));
+                    ListObjectInfo = [.. await WorkWithExcel.ExportFromXLSXFile(FileName, progress)];
                 }
                 else if (Path.GetExtension(FileName).Equals(".csv", StringComparison.CurrentCultureIgnoreCase))
                 {
                     IsIndeterminate = true;
                     NotifyPropertyChanged(nameof(IsIndeterminate));
-                    ListObjectInfo = new ObservableCollection<ObjectInfo>(await WorkWithExcel.ExportFromCSVFile(FileName));
+                    ListObjectInfo = [.. await WorkWithExcel.ExportFromCSVFile(FileName)];
                     IsIndeterminate = false;
                     NotifyPropertyChanged(nameof(IsIndeterminate));
                 }
