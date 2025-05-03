@@ -28,7 +28,7 @@ namespace TestPGD
         private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             var selectedItem = ((DataGrid)sender).SelectedItem;
-            ((DataGrid)sender).SelectedItem = null;             //"передернуть" SelectedItem
+            ((DataGrid)sender).SelectedItem = null;             //refreshed SelectedItem
             ((DataGrid)sender).SelectedItem = selectedItem;
         }
     }
