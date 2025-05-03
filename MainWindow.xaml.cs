@@ -13,7 +13,7 @@ namespace TestPGD
             InitializeComponent();
 
             var heightDescriptor = DependencyPropertyDescriptor.FromProperty(RowDefinition.HeightProperty, typeof(ItemsControl));
-            heightDescriptor.AddValueChanged(MainGrid.RowDefinitions[2], HeightChanged);
+            heightDescriptor.AddValueChanged(MainGrid.RowDefinitions[2], HeightChanged);    //subscribe to RowHeightChanged event
 
             DataContext = new ObjectInfoMVVM();
         }
